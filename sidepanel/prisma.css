@@ -1,0 +1,351 @@
+/* Prisma-inspired utility panel: local fonts, warm neutrals, quiet motion. */
+@font-face {
+  font-family: Almarai;
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('fonts/almarai-300.woff2') format('woff2');
+}
+@font-face {
+  font-family: Almarai;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/almarai-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: Almarai;
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('fonts/almarai-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: Almarai;
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('fonts/almarai-800.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/instrument-serif-italic.woff2') format('woff2');
+}
+
+:root {
+  --bg: #000;
+  --surface: #101010;
+  --surface-2: #171717;
+  --surface-3: #212121;
+  --text: #e1e0cc;
+  --text-2: #dedbc8;
+  --muted: #aaa99f;
+  --meta: #929188;
+  --accent: #dedbc8;
+  --accent-soft: rgba(222, 219, 200, 0.12);
+  --accent-line: rgba(222, 219, 200, 0.58);
+  --stroke: rgba(222, 219, 200, 0.12);
+  --stroke-soft: rgba(222, 219, 200, 0.08);
+  --stroke-hi: rgba(222, 219, 200, 0.3);
+  --stroke-ctrl: rgba(222, 219, 200, 0.36);
+  --focus: 0 0 0 3px rgba(222, 219, 200, 0.2);
+  --ok: #69c89b;
+  --warn: #e5b86e;
+  --err: #ee8b80;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --font-body: Almarai, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --r: 16px;
+  --r-sm: 9px;
+}
+
+html,
+body {
+  background: #000 !important;
+  color: #e1e0cc;
+}
+body {
+  padding: 20px 14px 36px;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+}
+body::before {
+  content: none;
+}
+h1 {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+h1 .wordmark {
+  flex: 1 0 calc(100% - 22px);
+  font-size: 40px;
+  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: -0.065em;
+  color: var(--text);
+}
+.wordmark em {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+.wordmark sup {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 5px;
+  margin-left: 4px;
+  font-size: 20px;
+  letter-spacing: 0;
+}
+h1 .dot {
+  flex: 0 0 6px;
+}
+.badge {
+  background: transparent;
+  border-color: var(--stroke);
+  color: var(--muted);
+  font-size: 9.5px;
+  font-weight: 400;
+}
+.tabs {
+  background: #000;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
+  padding: 4px;
+  gap: 3px;
+  margin-bottom: 20px;
+}
+.tab {
+  border-radius: 999px;
+  padding: 10px 6px;
+  font-size: 12px;
+}
+.tab.active {
+  background: var(--text-2);
+  color: #101010;
+  box-shadow: none;
+}
+section {
+  background: #101010;
+  border: 1px solid rgba(222, 219, 200, 0.08);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: none;
+  animation-duration: 480ms;
+}
+section::after {
+  content: none;
+}
+section:hover {
+  border-color: var(--stroke);
+}
+section.glow {
+  border-color: var(--accent-line);
+  box-shadow: none;
+}
+.sec-title {
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-2);
+  margin-bottom: 14px;
+  align-items: baseline;
+}
+.sec-title .muted {
+  font-weight: 400;
+  max-width: 77%;
+}
+input[type='text'],
+textarea,
+select {
+  background-color: #181818;
+  border-color: var(--stroke-ctrl);
+  box-shadow: none;
+  border-radius: 10px;
+}
+input[type='text'] {
+  height: 36px;
+  min-width: 0;
+}
+input[type='text']:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent-line);
+  box-shadow: var(--focus);
+}
+input::placeholder,
+textarea::placeholder {
+  color: #89887e;
+}
+textarea {
+  min-height: 92px;
+  padding: 10px 12px;
+  line-height: 1.6;
+}
+select {
+  height: 36px;
+}
+select option {
+  background: #212121;
+  color: var(--text);
+}
+button {
+  height: 36px;
+  border-radius: 999px;
+  padding: 0 14px;
+  color: #101010;
+  background: #dedbc8;
+  border: 1px solid #dedbc8;
+  box-shadow: none;
+  font-weight: 700;
+  font-size: 12px;
+}
+button::after {
+  content: none;
+}
+button:hover:not(:disabled) {
+  background: #eeecd9;
+  border-color: #eeecd9;
+  box-shadow: none;
+}
+button.ghost {
+  background: #212121;
+  color: var(--text);
+  border-color: rgba(222, 219, 200, 0.25);
+  box-shadow: none;
+  font-weight: 400;
+}
+button.ghost:hover:not(:disabled) {
+  background: #2b2b29;
+  border-color: var(--accent-line);
+  box-shadow: none;
+}
+button.ghost.active {
+  background: var(--text-2);
+  color: #101010;
+  border-color: var(--text-2);
+}
+button.small {
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+button.danger {
+  background: #352322;
+  border-color: #78504b;
+  color: #efb7ab;
+}
+button.danger:hover:not(:disabled) {
+  background: #49302b;
+  border-color: #b67b6f;
+  box-shadow: none;
+}
+button:disabled {
+  opacity: 0.38;
+}
+.ic {
+  width: 14px;
+  height: 14px;
+}
+.row {
+  min-width: 0;
+}
+.params {
+  gap: 8px;
+}
+.muted {
+  color: var(--muted);
+}
+.thumb {
+  border-radius: 10px;
+  background: #212121;
+}
+.thumb.sel {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+.thumb.sel::after {
+  background: var(--text-2);
+  color: #101010;
+}
+.pbar {
+  height: 3px;
+  background: rgba(222, 219, 200, 0.12);
+}
+.pbar > div {
+  background: #dedbc8;
+}
+.lq-row {
+  padding: 9px 2px;
+}
+.lq-st {
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.hist-item {
+  background: #171717;
+  border: 0;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  padding: 12px;
+}
+.hist-item:hover {
+  background: #212121;
+}
+.hist-item .hm {
+  color: var(--muted);
+}
+.hist-item .hx {
+  width: 24px;
+  height: 24px;
+}
+.small-check span {
+  color: var(--muted);
+}
+#log {
+  background: #171717;
+  border-color: var(--stroke);
+}
+.toast {
+  background: #212121;
+  color: var(--text);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+#staleWarn {
+  border-radius: 12px !important;
+}
+#staleWarn {
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid var(--err);
+  color: var(--err);
+}
+@media (max-width: 350px) {
+  body {
+    padding-inline: 10px;
+  }
+  section {
+    padding: 12px;
+  }
+  .tab {
+    font-size: 11px;
+  }
+  .controls {
+    gap: 5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

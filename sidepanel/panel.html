@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Flow Auto</title>
+    <link rel="stylesheet" href="base.css" />
+    <link rel="stylesheet" href="prisma.css" />
+  </head>
+  <body>
+    <h1>
+      <span class="dot" id="dot"></span><span class="wordmark">Flow <em>Auto</em><sup>*</sup></span
+      ><span class="badge" id="buildBadge">?</span><span class="badge" id="drvBadge">drv ?</span
+      ><span class="badge" id="aimBadge">прицел ✖</span
+      ><span class="badge" id="phaseBadge">ожидание</span>
+    </h1>
+    <div id="staleWarn" class="hidden" role="alert">
+      Вкладка Flow держит старый драйвер. Закрой её целиком, открой заново и нажми «Вкладка Flow».
+    </div>
+    <nav class="tabs" aria-label="Разделы панели">
+      <button type="button" class="tab active" data-tab="work">Работа</button>
+      <button type="button" class="tab" data-tab="upload">Выгрузка</button>
+      <button type="button" class="tab" data-tab="history">История промтов</button>
+    </nav>
+    <main>
+      <div id="tabWork">
+        <section id="scrapeSec">
+          <div class="sec-title">
+            Threads <span class="muted" id="scrapeModeHint">одна ссылка</span>
+          </div>
+          <div class="row" style="margin-bottom: 8px">
+            <button class="ghost small" id="modeSingle" style="flex: 1">Одна</button>
+            <button class="ghost small" id="modeBulk" style="flex: 1">Столбик ссылок</button>
+          </div>
+          <div class="row" id="singleRow">
+            <input
+              type="text"
+              id="link"
+              aria-label="Ссылка Threads"
+              placeholder="https://www.threads.com/@username"
+            />
+            <button id="grabBtn">Выгрузить</button>
+          </div>
+          <textarea
+            id="bulkList"
+            class="hidden"
+            aria-label="Ссылки для галереи"
+            placeholder="По одной ссылке на строку"
+            style="min-height: 110px"
+          ></textarea>
+          <div class="row" id="bulkRow" style="display: none; margin-top: 8px">
+            <button id="bulkBtn" style="flex: 1">Выгрузить всё в галерею</button>
+          </div>
+          <div class="err" id="scrapeErr" role="alert"></div>
+        </section>
+        <section id="pickingSec" class="hidden">
+          <div class="sec-title">Фото <span id="photoStat" class="muted"></span></div>
+          <div class="thumbs-toolbar">
+            <button class="ghost small" id="selectAll">Выбрать все</button
+            ><button class="ghost small" id="selVisible">Только видимые</button
+            ><button class="ghost small" id="clearSel">Снять</button
+            ><span class="muted" id="selCount"></span>
+          </div>
+          <div id="gallery"></div>
+        </section>
+        <section id="promptSec">
+          <label class="sec-title" for="prompt">Промт</label>
+          <textarea id="prompt" placeholder="Опиши, что сделать с фото…"></textarea>
+          <label class="check"
+            ><input type="checkbox" id="useBase" /><span
+              >Есть заранее заданная фотка (вторая добавится рядом)</span
+            ></label
+          >
+          <div class="row" id="baseRow" style="display: none; align-items: center">
+            <input type="file" id="baseFile" accept="image/*" aria-label="Базовое фото" /><button
+              class="ghost small"
+              id="clearBase"
+              aria-label="Убрать базовое фото"
+            >
+              ×
+            </button>
+          </div>
+          <div class="params">
+            <select id="mode" aria-label="Режим генерации">
+              <option value="image">Картинки</option>
+              <option value="video">Видео</option>
+            </select>
+            <label class="muted" for="delay">Пауза</label
+            ><input type="text" inputmode="numeric" class="narrow" id="delay" value="10" />
+            <label class="muted" for="timeout">Таймаут</label
+            ><input type="text" inputmode="numeric" class="mid" id="timeout" value="180" />
+          </div>
+          <details class="settings">
+            <summary>
+              <span class="chev" aria-hidden="true">›</span>Настройки повторов и деталей
+            </summary>
+            <div class="settings-grid">
+              <label
+                >Повторов при отказе<input
+                  type="text"
+                  inputmode="numeric"
+                  class="narrow"
+                  id="retryCount"
+                  value="1"
+              /></label>
+              <label
+                >Пауза между повторами, с<input
+                  type="text"
+                  inputmode="numeric"
+                  class="narrow"
+                  id="retryDelay"
+                  value="5"
+              /></label>
+              <label class="check small-check"
+                ><input type="checkbox" id="retryViaTile" /><span
+                  >Повтор кнопкой «Сгенерировать повторно» на чужом тайле. Может давать ложные
+                  «готово», оставь выключенным.</span
+                ></label
+              >
+              <label class="check small-check"
+                ><input type="checkbox" id="autoDownload" checked /><span
+                  >Автоскачивание результатов</span
+                ></label
+              >
+            </div>
+          </details>
+        </section>
+        <section id="queueSec">
+          <label class="sec-title" for="linkList"
+            >Очередь ссылок <span id="queueStat" class="muted"></span
+          ></label>
+          <textarea
+            id="linkList"
+            placeholder="По одной ссылке на строку. Прогон пойдёт по порядку."
+          ></textarea>
+          <div class="params">
+            <label class="muted" for="maxPerLink">Фото на ссылку</label
+            ><input type="text" inputmode="numeric" class="narrow" id="maxPerLink" value="0" /><span
+              class="muted"
+              >0 = все</span
+            >
+          </div>
+          <div class="controls">
+            <button id="queueBtn" disabled>В очередь</button
+            ><button class="ghost small" id="clearQueueBtn">Очистить</button>
+          </div>
+          <div id="linkStatusList" class="hidden"></div>
+        </section>
+        <section id="runSec">
+          <div class="sec-title">Прогон <span id="progText" class="muted"></span></div>
+          <div class="pbar"><div id="pbarFill"></div></div>
+          <div class="controls">
+            <button id="startBtn" disabled>Старт</button
+            ><button class="ghost" id="pauseBtn" disabled>Пауза</button
+            ><button class="ghost" id="resumeBtn" disabled>Дальше</button
+            ><button class="ghost danger" id="stopBtn" disabled>Стоп</button>
+            <button class="ghost small" id="retryBtn" style="display: none">
+              Повторить ошибки
+            </button>
+            <button
+              class="ghost small"
+              id="reloadFlowBtn"
+              title="Обновить драйвер после перезагрузки расширения"
+            >
+              Вкладка Flow
+            </button>
+            <button
+              class="ghost small"
+              id="dumpBtn"
+              title="Сохранить структуру DOM Flow в Загрузки"
+            >
+              DOM Flow
+            </button>
+            <button class="ghost small" id="aimBtn" title="Кликни по кнопке отправки в окне Flow">
+              Прицел
+            </button>
+            <button
+              class="ghost small"
+              id="selfBtn"
+              title="Отчёт и скриншот вкладки Flow в Загрузки"
+            >
+              Самотест
+            </button>
+            <button class="ghost small" id="diagBtn" style="margin-left: auto">Диагностика</button>
+          </div>
+        </section>
+        <section id="logSec">
+          <div class="sec-title">
+            Лог <button class="ghost small" id="clearLog">Очистить</button>
+          </div>
+          <div id="log" role="log" aria-label="Журнал работы"></div>
+        </section>
+      </div>
+      <div id="tabUpload" class="hidden">
+        <section>
+          <label class="sec-title" for="upList"
+            >Выгрузка в Flow
+            <span class="muted" id="upHint">только фото, без генерации</span></label
+          >
+          <p class="muted">
+            Ссылки идут по порядку, фото уходят в композер Flow одно за другим. Промт не вводится,
+            Generate не нажимается, дальше всё вручную.
+          </p>
+          <textarea
+            id="upList"
+            placeholder="По одной ссылке на строку"
+            style="min-height: 150px"
+          ></textarea>
+          <div class="controls">
+            <button id="upBtn" disabled>Выгрузить в Flow</button
+            ><button
+              class="ghost"
+              id="upSkipBtn"
+              disabled
+              title="Пропустить остаток текущей ссылки"
+            >
+              Дальше</button
+            ><button class="ghost" id="upStopBtn" disabled>Стоп</button
+            ><button class="ghost small" id="upClearBtn">Очистить</button
+            ><span class="muted" id="upCount" style="margin-left: auto"></span>
+          </div>
+          <div class="pbar"><div id="upPbar"></div></div>
+          <div class="muted" id="upStat" style="margin-top: 6px"></div>
+          <div id="upStatusList" class="hidden"></div>
+        </section>
+      </div>
+      <div id="tabHistory" class="hidden">
+        <section>
+          <div class="sec-title">Сохранённые промты <span id="histCount" class="muted"></span></div>
+          <div id="historyList"></div>
+        </section>
+      </div>
+    </main>
+    <div id="toasts" role="status" aria-live="polite"></div>
+    <script src="panel.js"></script>
+  </body>
+</html>

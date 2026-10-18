@@ -1,0 +1,16 @@
+{
+  "name": "flow-auto",
+  "version": "0.1.10",
+  "private": true,
+  "description": "Chrome side-panel workflow for Threads images and Google Flow",
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "node --check background/sw.js && node --check content/flow-driver.js && node --check content/threads-fallback.js && node --check lib/threads.js && node --check sidepanel/panel.js",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "prettier": "3.9.10"
+  }
+}
